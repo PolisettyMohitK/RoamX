@@ -79,7 +79,7 @@ export default function Navbar() {
               }}
               className="bg-gold hidden h-10 items-center rounded-full px-5 text-sm font-semibold text-navy-900 transition hover:brightness-105 sm:flex"
             >
-              Join waitlist
+              Plan my trip
             </a>
             <button
               onClick={() => setMenu(!open)}
@@ -134,7 +134,7 @@ export default function Navbar() {
               }}
               className="bg-gold flex h-14 items-center justify-center rounded-full font-semibold text-navy-900"
             >
-              Join waitlist
+              Plan my trip
             </a>
           </motion.div>
         )}

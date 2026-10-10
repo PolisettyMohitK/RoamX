@@ -3,15 +3,29 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Emblem } from "@/components/brand/Logo";
-import { platform } from "@/lib/content";
+import { business } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
-/* RoamX admin dashboard, designed at 1000 × 625 and scaled by ScaledScreen. */
+/* RoamX company travel desk, designed at 1000 × 625 and scaled by ScaledScreen. */
 
+// Flight arcs between cities on a stylised map (620 × 380).
+const CITIES = {
+  DEL: [250, 120],
+  BOM: [205, 215],
+  BLR: [255, 290],
+  GOI: [215, 255],
+  DXB: [95, 150],
+  SIN: [520, 330],
+} as const;
+const ARC = (a: keyof typeof CITIES, b: keyof typeof CITIES, lift: number) => {
+  const [x1, y1] = CITIES[a];
+  const [x2, y2] = CITIES[b];
+  return `M${x1} ${y1} Q ${(x1 + x2) / 2} ${Math.min(y1, y2) - lift} ${x2} ${y2}`;
+};
 const ROUTES = [
-  { d: "M60 300 C 160 280, 200 180, 300 170 S 460 90, 560 60", c: "#f6de9a" },
-  { d: "M40 120 C 140 140, 220 240, 340 250 S 500 300, 580 330", c: "#8fa3cf" },
-  { d: "M120 360 C 200 320, 260 340, 330 300 S 430 200, 520 210", c: "#d4a54e" },
+  { d: ARC("BLR", "DXB", 110), c: "#f6de9a" },
+  { d: ARC("DEL", "SIN", 90), c: "#8fa3cf" },
+  { d: ARC("BOM", "GOI", 40), c: "#d4a54e" },
 ];
 
 const toneDot = { ok: "bg-emerald-400", warn: "bg-amber-400", gold: "bg-gold-200" } as const;
@@ -22,10 +36,10 @@ function EventStream() {
     const t = setInterval(() => setCount((c) => c + 1), 1900);
     return () => clearInterval(t);
   }, []);
-  const n = platform.events.length;
+  const n = business.events.length;
   const visible = Array.from({ length: Math.min(count, 5) }, (_, i) => {
     const idx = count - 1 - i;
-    return { key: idx, ...platform.events[idx % n] };
+    return { key: idx, ...business.events[idx % n] };
   });
 
   return (
@@ -66,8 +80,8 @@ export default function DashboardScreen() {
         {/* top bar */}
         <header className="flex h-[58px] items-center justify-between border-b border-navy-800 px-6">
           <div>
-            <p className="text-[15px] font-semibold">Live operations</p>
-            <p className="text-[11px] text-ivory-50/45">Tech Park campus · Morning shift</p>
+            <p className="text-[15px] font-semibold">Company trips</p>
+            <p className="text-[11px] text-ivory-50/45">Travel desk · This month</p>
           </div>
         </header>
 
@@ -82,37 +96,34 @@ export default function DashboardScreen() {
                 {Array.from({ length: 10 }, (_, i) => (
                   <path key={`h${i}`} d={`M0 ${i * 40}H620`} stroke="#13254a" strokeWidth="1" />
                 ))}
-                <path d="M0 220 C 140 200, 260 260, 380 230 S 560 180, 620 200" stroke="#1a2f5c" strokeWidth="14" fill="none" />
                 {ROUTES.map((r, i) => (
                   <g key={i}>
                     <path id={`dash-route-${i}`} d={r.d} stroke={r.c} strokeOpacity="0.9" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                    <circle r="6" fill={r.c}>
-                      <animateMotion dur={`${9 + i * 3}s`} repeatCount="indefinite" rotate="auto">
+                    <path d="M7 0 L-5 -5 L-3 0 L-5 5 Z" fill={r.c}>
+                      <animateMotion dur={`${7 + i * 2}s`} repeatCount="indefinite" rotate="auto">
                         <mpath href={`#dash-route-${i}`} />
                       </animateMotion>
-                    </circle>
-                    <circle r="13" fill={r.c} opacity="0.2">
-                      <animateMotion dur={`${9 + i * 3}s`} repeatCount="indefinite">
-                        <mpath href={`#dash-route-${i}`} />
-                      </animateMotion>
-                    </circle>
+                    </path>
                   </g>
                 ))}
-                <g transform="translate(560 60)">
-                  <rect x="-16" y="-16" width="32" height="32" rx="9" fill="#fbf8f2" />
-                  <path d="M-6 6V-4l6-4 6 4V6z" fill="#13254a" />
-                </g>
+                {Object.entries(CITIES).map(([code, [x, y]]) => (
+                  <g key={code}>
+                    <circle cx={x} cy={y} r="4" fill="#fbf8f2" />
+                    <text x={x + 8} y={y + 4} fontSize="11" fill="#fbf8f2" fillOpacity="0.6" fontFamily="var(--font-jetbrains)">
+                      {code}
+                    </text>
+                  </g>
+                ))}
               </svg>
             </div>
 
             {/* trips table */}
             <div className="rounded-2xl bg-navy-900 p-3">
-              {platform.trips.map((t) => (
-                <div key={t.id} className="grid grid-cols-[56px_1fr_60px_70px] items-center px-2 py-1.5 text-[12px]">
+              {business.trips.map((t) => (
+                <div key={t.id} className="grid grid-cols-[96px_1fr_90px] items-center px-2 py-1.5 text-[12px]">
                   <span className="font-mono text-gold-200">{t.id}</span>
                   <span className="text-ivory-50/80">{t.label}</span>
-                  <span className="font-mono text-ivory-50/50">{t.seats}</span>
-                  <span className={cn("text-right", t.eta === "Arrived" ? "text-emerald-400" : "text-ivory-50/70")}>{t.eta}</span>
+                  <span className={cn("text-right", t.status === "Completed" ? "text-emerald-400" : "text-ivory-50/70")}>{t.status}</span>
                 </div>
               ))}
             </div>

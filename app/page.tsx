@@ -2,6 +2,7 @@ import Arrival from "@/components/intro/Arrival";
 import Navbar from "@/components/sections/Navbar";
 import DoorsHero from "@/components/sections/DoorsHero";
 import ProblemLine from "@/components/sections/ProblemLine";
+import Packages from "@/components/sections/Packages";
 import WheelStage from "@/components/sections/WheelStage";
 import Features from "@/components/sections/Features";
 import Platform from "@/components/sections/Platform";
@@ -18,6 +19,7 @@ export default function Home() {
       <main>
         <DoorsHero />
         <ProblemLine />
+        <Packages />
         <WheelStage />
         <Features />
         <Platform />

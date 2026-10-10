@@ -61,7 +61,7 @@ export default function InstagramCard() {
 
 
         <p className="relative mt-5 text-[15px] leading-relaxed text-ivory-50/70" style={{ transform: "translateZ(14px)" }}>
-          Follow the ride. Product drops, routes and the road to launch.
+          Follow the journey. Destinations, offers and trips we have planned.
         </p>
         <span
           className="bg-gold relative mt-5 flex h-11 items-center justify-center rounded-full text-sm font-semibold text-navy-900"

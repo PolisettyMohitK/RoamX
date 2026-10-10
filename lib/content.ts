@@ -1,12 +1,16 @@
 // All page copy lives here so it can be edited without touching components.
 // Items marked TODO are placeholders awaiting real assets/details from the client.
 
+// width and quality are added per screen by lib/imageLoader.ts
+const unsplash = (id: string) => `https://images.unsplash.com/${id}?auto=format&fit=crop`;
+
 export const site = {
   name: "RoamX",
   tagline: "Evolve",
-  url: "https://roamx.app", // TODO: final domain
+  url: "https://roamxevolve.pages.dev", // TODO: custom domain when ready
+  title: "RoamX — Holidays, flights and stays, handled",
   description:
-    "RoamX is the corporate mobility platform that books, routes, tracks and reconciles every employee trip from one dashboard.",
+    "RoamX plans and manages every part of your trip: curated holiday packages, flights, hotels and stays, and a full travel desk for companies.",
   email: "hello@roamx.app", // TODO: real contact email
   instagram: "roamx", // TODO: real handle
   socials: {
@@ -17,112 +21,134 @@ export const site = {
 };
 
 export const nav = [
+  { label: "Packages", href: "#packages" },
   { label: "How it works", href: "#how" },
-  { label: "Features", href: "#features" },
-  { label: "Platform", href: "#platform" },
+  { label: "For business", href: "#business" },
   { label: "FAQ", href: "#faq" },
 ];
 
+// Hero slideshow: free Unsplash photos for now. TODO: replace with the client's own package photos.
 export const hero = {
-  headline: ["Your company's commute,", "handled."],
-  sub: "Book, route, track and reconcile every employee trip from one dashboard.",
-  image:
-    "https://images.unsplash.com/photo-1543996991-8e851c2dc841?auto=format&fit=crop&w=2400&q=80", // Denys Nevozhai / Unsplash. TODO: branded photo
+  headline: ["Your next escape,", "handled."],
+  sub: "Holiday packages, flights and stays, planned end to end by one team.",
+  cta: "Plan my trip",
+  slides: [
+    { src: unsplash("photo-1444210971048-6130cf0c46cf"), alt: "Friends around a beach bonfire at sunset" }, // Kimson Doan
+    { src: unsplash("photo-1697898109604-e06e88b15271"), alt: "Overwater villa in a turquoise lagoon in the Maldives" }, // Matheen Faiz
+    { src: unsplash("photo-1598091383021-15ddea10925d"), alt: "Snow-capped mountains above a green meadow in Kashmir" }, // Praneet Kumar
+    { src: unsplash("photo-1580502304784-8985b7eb7260"), alt: "Santorini's white cliffside village lit up at dusk" }, // James Ting
+    { src: unsplash("photo-1711609110590-5ad5c4599e56"), alt: "Pura Ulun Danu Bratan temple on a lake in Bali at golden hour" }, // Katarzyna Zygnerska
+    { src: unsplash("photo-1593693401060-9fc28cf9e368"), alt: "Houseboat on the palm-lined backwaters of Kerala" }, // Abhishek Prasad
+  ],
 };
 
 export const problem =
-  "Rosters on WhatsApp. Drivers who don't show. Invoices nobody can check. Corporate transport deserves better.";
+  "Twenty open tabs. Hidden fees. Plans that fall apart at the airport. Your holiday deserves better.";
 export const problemHighlights = ["better."];
 
-export const steps = ["Request", "Route", "Ride", "Reconcile"];
-export const stepsLine = "One platform runs every trip, from the first tap to the final invoice.";
+export const steps = ["Plan", "Book", "Fly", "Stay"];
+export const stepsLine = "One team takes your trip from the first idea to the last night's stay.";
+
+// TODO: confirm destinations and package names with the client.
+export const packages = {
+  headline: "Where to next?",
+  sub: "Curated packages with flights, stays and experiences included. Tell us when, we handle the rest.",
+  items: [
+    { name: "Goa", kind: "Beach escape", image: unsplash("photo-1614082242765-7c98ca0f3df3") }, // Sumit Sourav
+    { name: "Maldives", kind: "Island villas", image: unsplash("photo-1601999705946-fbf42c3c6c66") }, // Upgraded Points
+    { name: "Kashmir", kind: "Mountain retreat", image: unsplash("photo-1567601169793-64703dc5324a") }, // Nitin Karolla
+    { name: "Kerala", kind: "Backwaters & houseboats", image: unsplash("photo-1593693411515-c20261bcad6e") }, // Abhishek Prasad
+    { name: "Dubai", kind: "City & desert", image: unsplash("photo-1549944850-84e00be4203b") }, // Fernando Jorge
+    { name: "Bali", kind: "Temples & tropics", image: unsplash("photo-1518548419970-58e3b4079ab2") }, // Harry Kessell
+  ],
+};
 
 export const features = {
-  headline: "Everything a fleet needs. Nothing it doesn't.",
+  headline: "Every part of the trip. One team.",
   items: [
-    { key: "tracking", title: "Live tracking", line: "Every vehicle and every rider in real time, with live trips shared to your security desk." },
-    { key: "pooling", title: "Smart pooling", line: "Riders are grouped by route and shift, so fewer vehicles carry more people." },
-    { key: "safety", title: "Safety by default", line: "OTP boarding, in-app SOS and night-drop rules protect every employee on every trip." },
-    { key: "approvals", title: "Policy & approvals", line: "Decide who travels, when and how. Trips outside policy never get booked." },
-    { key: "fleet", title: "Vendors & fleet", line: "Every partner, driver and vehicle managed in one place instead of ten spreadsheets." },
-    { key: "analytics", title: "Cost clarity", line: "Spend by team, route and kilometre, with vendor invoices reconciled automatically." },
+    { key: "packages", title: "Holiday packages", line: "Curated itineraries for beaches, mountains and cities, with flights and stays already in place." },
+    { key: "flights", title: "Flights", line: "Domestic and international tickets at the right fare, booked, changed and managed for you." },
+    { key: "stays", title: "Stays", line: "Handpicked hotels, villas and resorts, from boutique hideaways to family-friendly favourites." },
+    { key: "business", title: "Business travel", line: "A travel desk for companies: employee trips, approvals and one clean invoice." },
+    { key: "visas", title: "Visas & insurance", line: "Paperwork and cover sorted well before you reach the airport." },
+    { key: "support", title: "Support on the go", line: "One number to call from takeoff to check-out, wherever you are." },
   ],
 };
 
-export const platform = {
-  headline: "One platform. Every seat in the company.",
-  sub: "A command centre for admins and a two-tap app for every employee.",
+export const business = {
+  headline: "Travelling for work? We run that too.",
+  sub: "A travel desk for companies: book, approve and track every employee trip, with flights, stays and one invoice.",
   events: [
-    { t: "08:41", text: "Route 07 picked up Priya S.", tone: "ok" },
-    { t: "08:42", text: "Cab KA-01 · 4 min delay → rerouted", tone: "warn" },
-    { t: "08:43", text: "Night-drop approved for Rahul M.", tone: "ok" },
-    { t: "08:44", text: "Shuttle 12 reached Tech Park", tone: "ok" },
-    { t: "08:45", text: "Invoice #2281 auto-matched · ₹48,200", tone: "gold" },
-    { t: "08:46", text: "SOS cleared · Route 03", tone: "warn" },
+    { t: "09:12", text: "Flight 6E 1432 confirmed for Priya S.", tone: "ok" },
+    { t: "09:14", text: "Hotel booked · Marina Suites, Dubai", tone: "ok" },
+    { t: "09:15", text: "Trip to Singapore approved by Finance", tone: "gold" },
+    { t: "09:17", text: "AI 803 delayed 40 min → transfer moved", tone: "warn" },
+    { t: "09:18", text: "Visa approved for Rahul M.", tone: "ok" },
+    { t: "09:20", text: "Monthly invoice ready · 42 trips", tone: "gold" },
   ],
   trips: [
-    { id: "R-07", label: "Whitefield → Tech Park", seats: "14/18", eta: "6 min" },
-    { id: "R-03", label: "Koramangala → HQ", seats: "9/12", eta: "11 min" },
-    { id: "C-01", label: "Airport → Client site", seats: "1/4", eta: "24 min" },
-    { id: "R-12", label: "HSR → Tech Park", seats: "16/18", eta: "Arrived" },
+    { id: "BLR → DXB", label: "Sales offsite · 6 travellers", status: "Booked" },
+    { id: "DEL → SIN", label: "Client visit · Rahul M.", status: "Approved" },
+    { id: "BOM → GOI", label: "Team retreat · 18 travellers", status: "Planning" },
+    { id: "HYD → BLR", label: "Training · Priya S.", status: "Completed" },
   ],
 };
 
-// TODO: replace with real pilot-partner quotes (with permission)
+// TODO: replace with real customer quotes (with permission)
 export const testimonials = [
   {
-    quote: "We retired three spreadsheets and a WhatsApp group in the first week.",
-    name: "Head of Admin",
-    org: "IT services company",
+    quote: "Our Goa trip was planned down to the beach shack. We just packed and showed up.",
+    name: "Ananya & Rohit",
+    org: "Goa, 5 nights",
   },
   {
-    quote: "Our night-shift team finally trusts the drop. That alone was worth it.",
+    quote: "Flights, villa, transfers, even the sunset cruise. One call, zero stress.",
+    name: "The Mehta family",
+    org: "Maldives, 6 nights",
+  },
+  {
+    quote: "Forty people to Dubai for our offsite, and finance got a single invoice.",
     name: "HR Lead",
-    org: "Operations company",
-  },
-  {
-    quote: "Vendor invoices used to take a week to check. Now they match themselves.",
-    name: "Finance Manager",
-    org: "Consulting firm",
+    org: "Technology company",
   },
 ];
 
 // TODO: real team names, roles and photos
 export const team = [
   { name: "Founder Name", role: "Founder & CEO", image: "" },
-  { name: "Co-founder Name", role: "Co-founder & CTO", image: "" },
-  { name: "Team Member", role: "Head of Operations", image: "" },
-  { name: "Team Member", role: "Product Design", image: "" },
+  { name: "Co-founder Name", role: "Co-founder", image: "" },
+  { name: "Team Member", role: "Head of Travel Operations", image: "" },
+  { name: "Team Member", role: "Holiday Specialist", image: "" },
 ];
 
 export const faq = [
   {
-    q: "Who is RoamX for?",
-    a: "Companies that move employees: daily office commutes, shift transport, airport runs and client visits. If you run shuttles or book cabs for staff, RoamX is built for you.",
+    q: "What can RoamX book for me?",
+    a: "Everything a trip needs: holiday packages, domestic and international flights, hotels, villas and resorts, transfers, sightseeing, visas and travel insurance.",
   },
   {
-    q: "Do we need to own vehicles?",
-    a: "No. RoamX works with your existing transport vendors, your own fleet, or a mix of both.",
+    q: "Can I customise a package?",
+    a: "Always. Every package is a starting point. Change the dates, the stay, the pace or the budget and we'll rebuild the itinerary around you.",
   },
   {
-    q: "How long does setup take?",
-    a: "Most teams go live in under two weeks. We import your employee roster, offices and vendors, and your people simply download the app.",
+    q: "How do I get a quote?",
+    a: "Tell us where you'd like to go, roughly when and who's travelling. A specialist will come back with options and a clear price, usually within a day.",
   },
   {
-    q: "How does RoamX keep employees safe?",
-    a: "OTP-verified boarding, live trip sharing, an in-app SOS that alerts your security desk, and configurable rules for night drops.",
+    q: "Do you handle business travel?",
+    a: "Yes. Companies use RoamX as their travel desk: employee flights and stays, approvals, offsites and team retreats, all on one invoice.",
   },
   {
-    q: "Can it integrate with our HR systems?",
-    a: "Yes. RoamX syncs rosters from your HRMS and supports single sign-on, so access follows your org chart automatically.",
+    q: "What happens if my flight changes?",
+    a: "We watch your bookings and handle the changes: rebooking, moving transfers and letting your hotel know. You get one number to call throughout the trip.",
   },
   {
-    q: "When can we start?",
-    a: "We're onboarding early partners now. Join the waitlist and we'll reach out to schedule your rollout.",
+    q: "Is my payment safe?",
+    a: "Payments are made through secure, verified channels, and every booking is confirmed in writing before you travel.",
   },
 ];
 
 export const finalCta = {
-  headline: ["The next stop", "is yours."],
-  sub: "Join the waitlist for early access.",
+  headline: ["Your next stop", "starts here."],
+  sub: "Tell us where you'd like to go. A RoamX specialist will plan it with you.",
 };

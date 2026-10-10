@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 
 export const dynamic = "force-static";
 
-export const alt = "RoamX — Corporate mobility, handled";
+export const alt = "RoamX — Holidays, flights and stays, handled";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -34,11 +34,11 @@ export default function OpengraphImage() {
           <div style={{ fontSize: 44, fontWeight: 800, letterSpacing: 2 }}>ROAMX</div>
         </div>
         <div style={{ display: "flex", flexDirection: "column", fontSize: 84, fontWeight: 700, lineHeight: 1.02, letterSpacing: -3 }}>
-          <span>Your company&apos;s commute,</span>
+          <span>Your next escape,</span>
           <span style={{ color: "#e2bb6a", fontStyle: "italic" }}>handled.</span>
         </div>
         <div style={{ display: "flex", fontSize: 26, color: "rgba(251,248,242,0.6)" }}>
-          Book, route, track and reconcile every employee trip.
+          Holiday packages, flights and stays, planned end to end.
         </div>
       </div>
     ),

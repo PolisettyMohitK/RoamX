@@ -11,16 +11,16 @@ const josefin = Josefin_Sans({ variable: "--font-josefin", subsets: ["latin"], w
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
-  title: "RoamX — Corporate mobility, handled",
+  title: site.title,
   description: site.description,
   openGraph: {
-    title: "RoamX — Corporate mobility, handled",
+    title: site.title,
     description: site.description,
     url: site.url,
     siteName: "RoamX",
     type: "website",
   },
-  twitter: { card: "summary_large_image", title: "RoamX — Corporate mobility, handled", description: site.description },
+  twitter: { card: "summary_large_image", title: site.title, description: site.description },
 };
 
 export const viewport: Viewport = {
@@ -30,8 +30,9 @@ export const viewport: Viewport = {
 const jsonLd = [
   {
     "@context": "https://schema.org",
-    "@type": "Organization",
+    "@type": "TravelAgency",
     name: "RoamX",
+    description: site.description,
     url: site.url,
     slogan: "Evolve",
     sameAs: Object.values(site.socials),

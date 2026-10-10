@@ -4,9 +4,9 @@ import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import ScaledScreen from "@/components/ui/ScaledScreen";
 import DashboardScreen from "@/components/ui/DashboardScreen";
-import EmployeeAppScreen from "@/components/ui/EmployeeAppScreen";
+import TravellerAppScreen from "@/components/ui/TravellerAppScreen";
 import AmbientBackground from "@/components/ui/AmbientBackground";
-import { platform } from "@/lib/content";
+import { business } from "@/lib/content";
 
 /*
  * Device frames adapted from Great UI's Macbook Mockup and Mobile Mockup (great-ui.com),
@@ -43,7 +43,7 @@ function Phone() {
       <div className="relative overflow-hidden rounded-[clamp(24px,3vw,38px)]">
         <span className="absolute left-1/2 top-[1.6%] z-10 h-[3.6%] w-[32%] -translate-x-1/2 rounded-full bg-[#0b0f1c]" />
         <ScaledScreen width={300} height={620}>
-          <EmployeeAppScreen />
+          <TravellerAppScreen />
         </ScaledScreen>
       </div>
     </div>
@@ -84,14 +84,14 @@ export default function Platform() {
   );
 
   return (
-    <section ref={root} id="platform" className="relative overflow-hidden bg-ivory-100 pb-28 pt-28 sm:pb-40 sm:pt-36">
+    <section ref={root} id="business" className="relative overflow-hidden bg-ivory-100 pb-28 pt-28 sm:pb-40 sm:pt-36">
       <AmbientBackground />
       <div className="relative mx-auto max-w-[1180px] px-5 sm:px-10">
         <div data-head className="mx-auto max-w-[760px] text-center">
           <h2 className="font-display text-[clamp(36px,5vw,72px)] font-semibold leading-[1.02] tracking-[-0.035em] text-navy-800">
-            {platform.headline}
+            {business.headline}
           </h2>
-          <p className="mt-5 text-[clamp(16px,1.4vw,19px)] text-navy-800/60">{platform.sub}</p>
+          <p className="mt-5 text-[clamp(16px,1.4vw,19px)] text-navy-800/60">{business.sub}</p>
         </div>
 
         <div data-stage className="relative mx-auto mt-16 max-w-[1000px] sm:mt-20">

@@ -1,6 +1,6 @@
 # RoamX — landing page
 
-Marketing site for RoamX, the corporate employee-transport platform.
+Marketing site for RoamX: holiday packages, flights, stays and corporate travel.
 Next.js (static export) + Tailwind CSS + GSAP + Lenis, deployed on Cloudflare Pages.
 
 ## Develop
@@ -19,8 +19,8 @@ The logo vectors live in `lib/logo-paths.ts`.
 npm run build
 ```
 
-Outputs a fully static site to `out/`. The waitlist endpoint (`POST /api/waitlist`) is a
-Cloudflare Pages Function in `functions/api/waitlist.ts`.
+Outputs a fully static site to `out/`. The trip enquiry endpoint (`POST /api/enquiry`) is a
+Cloudflare Pages Function in `functions/api/enquiry.ts`.
 
 Preview the production build with the Pages runtime:
 
@@ -38,6 +38,6 @@ npx wrangler pages dev out
    - Root directory: `/`
 3. Environment variables (Settings → Variables and Secrets):
    - `NODE_VERSION` = `22` (also pinned in `.node-version`)
-   - `WAITLIST_WEBHOOK_URL` = where signups are forwarded (optional; without it signups are only logged)
+   - `ENQUIRY_WEBHOOK_URL` = where trip enquiries are forwarded (optional; without it they are only logged)
 4. Save and deploy. Every push to `main` redeploys; other branches get preview URLs.
 5. Custom domain: Pages project → Custom domains → add your domain, then update `site.url` in `lib/content.ts`.
