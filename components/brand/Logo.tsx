@@ -9,7 +9,7 @@ import { BLADE, CONTINENTS_2X, NAVY_FACES, PLANE, R_LEG, RING, SWOOSH, SWOOSH_LI
 
 type SvgProps = React.SVGProps<SVGSVGElement> & { title?: string };
 
-function Defs({ id }: { id: string }) {
+export function Defs({ id }: { id: string }) {
   return (
     <defs>
       <linearGradient id={`${id}-gold`} x1="0" y1="0" x2="1" y2="1">

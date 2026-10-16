@@ -3,11 +3,8 @@
 import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import Plane from "@/components/intro/Plane";
-import EnquiryForm from "@/components/ui/EnquiryForm";
-import InstagramCard from "@/components/ui/InstagramCard";
-import { Lockup } from "@/components/brand/Logo";
-import { finalCta, nav, site } from "@/lib/content";
-import { scrollToTarget } from "@/components/SmoothScroll";
+import StartButton from "@/components/ui/StartButton";
+import { PRICE, finalCta } from "@/lib/content";
 
 export default function FinalCTA() {
   const root = useRef<HTMLElement>(null);
@@ -50,23 +47,39 @@ export default function FinalCTA() {
   return (
     <section ref={root} id="join" className="metal-dark relative overflow-hidden pt-28 text-ivory-50 sm:pt-40">
 
-      <div className="relative mx-auto grid max-w-[1180px] items-start gap-14 px-5 sm:px-10 lg:grid-cols-[1.5fr_1fr]">
+      <div className="relative mx-auto grid max-w-[1180px] items-start gap-14 px-5 sm:px-10 lg:grid-cols-[1fr_1.1fr] lg:items-center lg:gap-20">
         <div className="min-w-0">
           <h2 className="font-display text-[clamp(44px,6.2vw,96px)] font-bold leading-[0.98] tracking-[-0.04em]">
             {finalCta.headline.map((l, i) => (
               <span key={l} className="block overflow-hidden pb-[0.08em]">
-                <span data-cta-line className={i === 1 ? "text-gold block italic" : "block"}>
+                <span data-cta-line className={i === 1 ? "text-gold block" : "block"}>
                   {l}
                 </span>
               </span>
             ))}
           </h2>
           <p className="mt-6 text-[clamp(16px,1.4vw,19px)] text-ivory-50/65">{finalCta.sub}</p>
-          <EnquiryForm className="mt-10" />
         </div>
-        <div className="flex justify-center lg:justify-end lg:pt-24">
-          <InstagramCard />
+
+        {/* the offer */}
+        <div className="min-w-0">
+          <div data-offer className="rounded-[28px] border border-[#c9973f]/35 bg-navy-950/55 p-7 sm:p-9">
+            <p className="text-gold font-display text-[clamp(52px,6vw,80px)] font-bold leading-none tracking-[-0.04em]">{PRICE}</p>
+            <p className="mt-3 text-[15px] text-ivory-50/70">{finalCta.terms.join(" · ")}</p>
+            <ul className="mt-7 grid gap-3 sm:grid-cols-2">
+              {finalCta.includes.map((f) => (
+                <li key={f} className="flex items-start gap-3 text-[15px] text-ivory-50/85">
+                  <svg viewBox="0 0 16 16" className="mt-1 size-4 shrink-0 text-gold-200" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M3 8.5l3.2 3L13 4.5" />
+                  </svg>
+                  {f}
+                </li>
+              ))}
+            </ul>
+            <StartButton className="mt-8 w-full sm:w-auto" />
+          </div>
         </div>
+
       </div>
 
       {/* sky + horizon: the plane takes off */}
@@ -78,40 +91,6 @@ export default function FinalCTA() {
         </div>
       </div>
 
-      {/* footer */}
-      <footer className="relative border-t border-[#c9973f]/30 bg-navy-950">
-        <div className="mx-auto flex max-w-[1180px] flex-col gap-10 px-5 py-14 sm:px-10 md:flex-row md:items-end md:justify-between">
-          <Lockup className="w-[min(70vw,300px)]" />
-          <nav className="flex flex-wrap gap-x-8 gap-y-3 text-sm text-ivory-50/60">
-            {nav.map((n) => (
-              <a
-                key={n.href}
-                href={n.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToTarget(n.href);
-                }}
-                className="transition-colors hover:text-gold-200"
-              >
-                {n.label}
-              </a>
-            ))}
-            <a href={`mailto:${site.email}`} className="transition-colors hover:text-gold-200">
-              {site.email}
-            </a>
-          </nav>
-        </div>
-        <div className="mx-auto flex max-w-[1180px] flex-col gap-4 border-t border-ivory-50/5 px-5 py-6 text-xs text-ivory-50/40 sm:flex-row sm:justify-between sm:px-10">
-          <span>© 2026 RoamX. All rights reserved.</span>
-          <span className="flex gap-6">
-            {Object.entries(site.socials).map(([k, v]) => (
-              <a key={k} href={v} target="_blank" rel="noopener noreferrer" className="capitalize transition-colors hover:text-gold-200">
-                {k === "x" ? "X" : k}
-              </a>
-            ))}
-          </span>
-        </div>
-      </footer>
     </section>
   );
 }

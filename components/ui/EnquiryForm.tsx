@@ -1,32 +1,30 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { DESTINATION_EVENT } from "@/components/sections/Packages";
 import { cn } from "@/lib/utils";
 
 type Status = "idle" | "loading" | "done" | "error";
-type Fields = { name: string; email: string; phone: string; destination: string; when: string; travellers: string; kind: string };
+type Fields = { name: string; email: string; phone: string; city: string; message: string; kind: string };
 
-const EMPTY: Fields = { name: "", email: "", phone: "", destination: "", when: "", travellers: "2", kind: "Holiday" };
+const KINDS = ["Student", "Working professional", "Business owner"];
+const EMPTY: Fields = { name: "", email: "", phone: "", city: "", message: "", kind: KINDS[0] };
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-const field =
-  "h-13 w-full rounded-2xl border border-ivory-50/15 bg-navy-950/50 px-4 text-[16px] text-ivory-50 outline-none transition-colors placeholder:text-ivory-50/40 focus:border-gold-400";
+// "dark" for navy stages, "light" for the ivory glass panel.
+const FIELD = {
+  dark: "border-ivory-50/15 bg-navy-950/50 text-ivory-50 placeholder:text-ivory-50/40",
+  light: "border-navy-800/10 bg-white/70 text-navy-800 placeholder:text-navy-800/40",
+};
 
-export default function EnquiryForm({ className }: { className?: string }) {
+export default function EnquiryForm({ className, tone = "dark" }: { className?: string; tone?: "dark" | "light" }) {
+  const field = cn("h-13 w-full rounded-2xl border px-4 text-[16px] outline-none transition-colors focus:border-gold-400", FIELD[tone]);
+  const light = tone === "light";
   const [f, setF] = useState<Fields>(EMPTY);
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
 
-  // "Plan this trip" on a package card pre-fills the destination.
-  useEffect(() => {
-    const onPick = (e: Event) => setF((v) => ({ ...v, destination: (e as CustomEvent<string>).detail, kind: "Holiday" }));
-    window.addEventListener(DESTINATION_EVENT, onPick);
-    return () => window.removeEventListener(DESTINATION_EVENT, onPick);
-  }, []);
-
-  const set = (k: keyof Fields) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const set = (k: keyof Fields) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setF((v) => ({ ...v, [k]: e.target.value }));
     if (status === "error") setStatus("idle");
   };
@@ -56,31 +54,33 @@ export default function EnquiryForm({ className }: { className?: string }) {
   }
 
   return (
-    <div className={cn("w-full max-w-2xl", className)}>
+    <div className={cn("w-full", className)}>
       <AnimatePresence mode="wait" initial={false}>
         {status === "done" ? (
           <motion.div
             key="done"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="rounded-3xl border border-gold-400/40 bg-navy-950/50 p-7"
+            className={cn("rounded-3xl border border-gold-400/40 p-7", light ? "bg-white/70" : "bg-navy-950/50")}
           >
             <p className="font-display text-2xl font-semibold">Thank you, {f.name.split(" ")[0]}.</p>
-            <p className="mt-2 text-ivory-50/70">
-              A RoamX specialist will get back to you{f.destination ? ` about ${f.destination}` : ""} within a day.
-            </p>
+            <p className={cn("mt-2", light ? "text-navy-800/70" : "text-ivory-50/70")}>The RoamX team will get in touch to help you start your company.</p>
           </motion.div>
         ) : (
-          <motion.form key="form" onSubmit={submit} noValidate exit={{ opacity: 0, y: -10 }} className="grid gap-3 sm:grid-cols-2">
-            <div className="flex gap-2 sm:col-span-2">
-              {["Holiday", "Business trip"].map((k) => (
+          <motion.form key="form" onSubmit={submit} noValidate exit={{ opacity: 0, y: -10 }} className="grid gap-3">
+            <div className="flex flex-wrap gap-2">
+              {KINDS.map((k) => (
                 <button
                   key={k}
                   type="button"
                   onClick={() => setF((v) => ({ ...v, kind: k }))}
                   className={cn(
-                    "h-10 rounded-full px-5 text-sm font-semibold transition-colors",
-                    f.kind === k ? "bg-gold text-navy-900" : "border border-ivory-50/20 text-ivory-50/75 hover:border-ivory-50/50",
+                    "h-10 rounded-full px-4 text-sm font-semibold transition-colors",
+                    f.kind === k
+                      ? "bg-gold text-navy-900"
+                      : light
+                        ? "border border-navy-800/15 text-navy-800/70 hover:border-navy-800/40"
+                        : "border border-ivory-50/20 text-ivory-50/75 hover:border-ivory-50/50",
                   )}
                 >
                   {k}
@@ -89,31 +89,34 @@ export default function EnquiryForm({ className }: { className?: string }) {
             </div>
             <label className="sr-only" htmlFor="q-name">Name</label>
             <input id="q-name" className={field} placeholder="Your name" autoComplete="name" value={f.name} onChange={set("name")} />
-            <label className="sr-only" htmlFor="q-email">Email</label>
-            <input id="q-email" className={field} placeholder="Email" type="email" autoComplete="email" value={f.email} onChange={set("email")} />
-            <label className="sr-only" htmlFor="q-phone">Phone</label>
-            <input id="q-phone" className={field} placeholder="Phone (optional)" type="tel" autoComplete="tel" value={f.phone} onChange={set("phone")} />
-            <label className="sr-only" htmlFor="q-dest">Destination</label>
-            <input id="q-dest" className={field} placeholder="Where to?" value={f.destination} onChange={set("destination")} />
-            <label className="sr-only" htmlFor="q-when">When</label>
-            <input id="q-when" className={field} placeholder="When? (e.g. December)" value={f.when} onChange={set("when")} />
-            <label className="sr-only" htmlFor="q-trav">Travellers</label>
-            <select id="q-trav" className={cn(field, "appearance-none")} value={f.travellers} onChange={set("travellers")}>
-              {["1", "2", "3", "4", "5", "6–10", "10+"].map((n) => (
-                <option key={n} value={n} className="bg-navy-900">
-                  {n === "1" ? "1 traveller" : `${n} travellers`}
-                </option>
-              ))}
-            </select>
-            <div className="flex flex-wrap items-center gap-4 pt-2 sm:col-span-2">
+            <div className="grid gap-3 sm:grid-cols-2">
+              <label className="sr-only" htmlFor="q-email">Email</label>
+              <input id="q-email" className={field} placeholder="Email" type="email" autoComplete="email" value={f.email} onChange={set("email")} />
+              <label className="sr-only" htmlFor="q-phone">Phone</label>
+              <input id="q-phone" className={field} placeholder="Phone / WhatsApp" type="tel" autoComplete="tel" value={f.phone} onChange={set("phone")} />
+            </div>
+            <label className="sr-only" htmlFor="q-city">City</label>
+            <input id="q-city" className={field} placeholder="City" autoComplete="address-level2" value={f.city} onChange={set("city")} />
+            <label className="sr-only" htmlFor="q-msg">Question</label>
+            <textarea
+              id="q-msg"
+              className={cn(field, "h-24 resize-none py-3")}
+              placeholder="Anything you'd like to ask? (optional)"
+              value={f.message}
+              onChange={set("message")}
+            />
+            <div className="flex flex-wrap items-center gap-4 pt-2">
               <button
                 type="submit"
                 disabled={status === "loading"}
-                className="bg-gold h-13 rounded-full px-8 text-base font-semibold text-navy-900 transition hover:brightness-105 disabled:opacity-70"
+                className={cn(
+                  "h-13 rounded-full px-8 text-base font-semibold transition disabled:opacity-70",
+                  light ? "bg-navy-800 text-ivory-50 hover:bg-navy-900" : "border border-ivory-50/40 text-ivory-50 hover:border-ivory-50",
+                )}
               >
-                {status === "loading" ? "Sending…" : "Plan my trip"}
+                {status === "loading" ? "Sending…" : "Get in touch"}
               </button>
-              <p role="status" className={cn("text-sm text-gold-200 transition-opacity", status === "error" ? "opacity-100" : "opacity-0")}>
+              <p role="status" className={cn("text-sm transition-opacity", light ? "text-[#9a6e2a]" : "text-gold-200", status === "error" ? "opacity-100" : "opacity-0")}>
                 {status === "error" ? message : ""}
               </p>
             </div>

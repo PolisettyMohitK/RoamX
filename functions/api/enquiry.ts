@@ -7,7 +7,7 @@ interface Env {
 }
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const FIELDS = ["name", "email", "phone", "destination", "when", "travellers", "kind"];
+const FIELDS = ["name", "email", "phone", "city", "message", "kind"];
 const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"];
 
 export const onRequestPost = async ({ request, env }: { request: Request; env: Env }) => {
@@ -15,7 +15,7 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
   const entry: Record<string, string> = { at: new Date().toISOString() };
   for (const k of [...FIELDS, ...UTM_KEYS]) {
     const v = body?.[k];
-    if (typeof v === "string" && v.trim()) entry[k] = v.trim().slice(0, 200);
+    if (typeof v === "string" && v.trim()) entry[k] = v.trim().slice(0, k === "message" ? 1000 : 200);
   }
 
   const reachable = EMAIL.test(entry.email ?? "") || (entry.phone ?? "").replace(/\D/g, "").length >= 7;

@@ -30,12 +30,21 @@ export const viewport: Viewport = {
 const jsonLd = [
   {
     "@context": "https://schema.org",
-    "@type": "TravelAgency",
+    "@type": "Organization",
     name: "RoamX",
     description: site.description,
     url: site.url,
     slogan: "Evolve",
     sameAs: Object.values(site.socials),
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "RoamX travel business portal",
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Web",
+    description: site.description,
+    offers: { "@type": "Offer", price: "9999", priceCurrency: "INR" },
   },
   {
     "@context": "https://schema.org",

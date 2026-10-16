@@ -1,15 +1,16 @@
 import Arrival from "@/components/intro/Arrival";
 import Navbar from "@/components/sections/Navbar";
 import DoorsHero from "@/components/sections/DoorsHero";
-import ProblemLine from "@/components/sections/ProblemLine";
-import Packages from "@/components/sections/Packages";
-import WheelStage from "@/components/sections/WheelStage";
-import Features from "@/components/sections/Features";
+import Story from "@/components/sections/Story";
+import Sell from "@/components/sections/Sell";
+import BrandTicket from "@/components/sections/BrandTicket";
+import Earn from "@/components/sections/Earn";
 import Platform from "@/components/sections/Platform";
-import Testimonials from "@/components/sections/Testimonials";
-import Team from "@/components/sections/Team";
+import Learn from "@/components/sections/Learn";
 import FAQ from "@/components/sections/FAQ";
 import FinalCTA from "@/components/sections/FinalCTA";
+import Footer from "@/components/sections/Footer";
+import ContactPill from "@/components/ui/ContactPill";
 
 export default function Home() {
   return (
@@ -18,16 +19,17 @@ export default function Home() {
       <Navbar />
       <main>
         <DoorsHero />
-        <ProblemLine />
-        <Packages />
-        <WheelStage />
-        <Features />
+        <Story />
+        <Sell />
+        <BrandTicket />
+        <Earn />
         <Platform />
-        <Testimonials />
-        <Team />
+        <Learn />
         <FAQ />
         <FinalCTA />
       </main>
+      <Footer />
+      <ContactPill />
     </>
   );
 }

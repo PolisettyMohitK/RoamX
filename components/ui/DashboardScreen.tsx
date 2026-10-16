@@ -2,33 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Emblem } from "@/components/brand/Logo";
-import { business } from "@/lib/content";
+import { platform } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
-/* RoamX company travel desk, designed at 1000 × 625 and scaled by ScaledScreen. */
+/* An agent's own RoamX portal, designed at 1000 × 625 and scaled by ScaledScreen. */
 
-// Flight arcs between cities on a stylised map (620 × 380).
-const CITIES = {
-  DEL: [250, 120],
-  BOM: [205, 215],
-  BLR: [255, 290],
-  GOI: [215, 255],
-  DXB: [95, 150],
-  SIN: [520, 330],
-} as const;
-const ARC = (a: keyof typeof CITIES, b: keyof typeof CITIES, lift: number) => {
-  const [x1, y1] = CITIES[a];
-  const [x2, y2] = CITIES[b];
-  return `M${x1} ${y1} Q ${(x1 + x2) / 2} ${Math.min(y1, y2) - lift} ${x2} ${y2}`;
-};
-const ROUTES = [
-  { d: ARC("BLR", "DXB", 110), c: "#f6de9a" },
-  { d: ARC("DEL", "SIN", 90), c: "#8fa3cf" },
-  { d: ARC("BOM", "GOI", 40), c: "#d4a54e" },
-];
-
-const toneDot = { ok: "bg-emerald-400", warn: "bg-amber-400", gold: "bg-gold-200" } as const;
+const inr = (n: number) => `₹${n.toLocaleString("en-IN")}`;
+const toneDot = { ok: "bg-emerald-400", gold: "bg-gold-200" } as const;
+const TABS = ["Flights", "Hotels", "Buses", "Packages"];
 
 function EventStream() {
   const [count, setCount] = useState(3);
@@ -36,10 +17,10 @@ function EventStream() {
     const t = setInterval(() => setCount((c) => c + 1), 1900);
     return () => clearInterval(t);
   }, []);
-  const n = business.events.length;
+  const n = platform.events.length;
   const visible = Array.from({ length: Math.min(count, 5) }, (_, i) => {
     const idx = count - 1 - i;
-    return { key: idx, ...business.events[idx % n] };
+    return { key: idx, ...platform.events[idx % n] };
   });
 
   return (
@@ -66,64 +47,81 @@ function EventStream() {
 }
 
 export default function DashboardScreen() {
+  const [tab, setTab] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setTab((v) => (v + 1) % TABS.length), 2600);
+    return () => clearInterval(t);
+  }, []);
+  const earned = platform.bookings.reduce((s, b) => s + b.markup, 0);
+
   return (
     <div className="flex h-[625px] w-[1000px] bg-navy-950 font-sans text-ivory-50">
-      {/* sidebar */}
+      {/* sidebar: the agent's own brand */}
       <aside className="flex w-[64px] flex-col items-center gap-5 border-r border-navy-800 py-5">
-        <Emblem width={30} height={30} />
+        <span className="grid size-[34px] place-items-center rounded-xl bg-[#1f3a6e] font-display text-[12px] font-bold">NJ</span>
         {[0, 1, 2, 3, 4].map((i) => (
           <span key={i} className={cn("size-9 rounded-xl", i === 0 ? "bg-navy-800 ring-1 ring-[#c9973f]" : "bg-navy-900")} />
         ))}
       </aside>
 
       <div className="flex flex-1 flex-col">
-        {/* top bar */}
         <header className="flex h-[58px] items-center justify-between border-b border-navy-800 px-6">
           <div>
-            <p className="text-[15px] font-semibold">Company trips</p>
-            <p className="text-[11px] text-ivory-50/45">Travel desk · This month</p>
+            <p className="text-[15px] font-semibold">{platform.agency}</p>
+            <p className="text-[11px] text-ivory-50/45">Your travel company · This month</p>
+          </div>
+          <div className="text-right">
+            <p className="text-[11px] text-ivory-50/45">Markup earned</p>
+            <p className="font-display text-[18px] font-semibold text-gold-200">{inr(earned)}</p>
           </div>
         </header>
 
         <div className="flex flex-1 gap-4 p-4">
-          {/* map */}
           <div className="flex flex-1 flex-col gap-4">
-            <div className="relative flex-1 overflow-hidden rounded-2xl bg-navy-900">
-              <svg viewBox="0 0 620 380" className="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid slice">
-                {Array.from({ length: 16 }, (_, i) => (
-                  <path key={`v${i}`} d={`M${i * 40} 0V380`} stroke="#13254a" strokeWidth="1" />
+            {/* search */}
+            <div className="rounded-2xl bg-navy-900 p-4">
+              <div className="flex gap-1.5">
+                {TABS.map((t, i) => (
+                  <span
+                    key={t}
+                    className={cn(
+                      "rounded-full px-3.5 py-1.5 text-[12px] transition-colors duration-500",
+                      i === tab ? "bg-gold font-semibold text-navy-900" : "bg-navy-800 text-ivory-50/60",
+                    )}
+                  >
+                    {t}
+                  </span>
                 ))}
-                {Array.from({ length: 10 }, (_, i) => (
-                  <path key={`h${i}`} d={`M0 ${i * 40}H620`} stroke="#13254a" strokeWidth="1" />
+              </div>
+              <div className="mt-4 grid grid-cols-[1fr_1fr_120px_110px] gap-2 text-[12px]">
+                {["From  Bengaluru", "To  Goa", "14 Nov", "2 travellers"].map((f) => (
+                  <span key={f} className="rounded-xl bg-navy-800 px-3 py-2.5 text-ivory-50/75">
+                    {f}
+                  </span>
                 ))}
-                {ROUTES.map((r, i) => (
-                  <g key={i}>
-                    <path id={`dash-route-${i}`} d={r.d} stroke={r.c} strokeOpacity="0.9" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                    <path d="M7 0 L-5 -5 L-3 0 L-5 5 Z" fill={r.c}>
-                      <animateMotion dur={`${7 + i * 2}s`} repeatCount="indefinite" rotate="auto">
-                        <mpath href={`#dash-route-${i}`} />
-                      </animateMotion>
-                    </path>
-                  </g>
-                ))}
-                {Object.entries(CITIES).map(([code, [x, y]]) => (
-                  <g key={code}>
-                    <circle cx={x} cy={y} r="4" fill="#fbf8f2" />
-                    <text x={x + 8} y={y + 4} fontSize="11" fill="#fbf8f2" fillOpacity="0.6" fontFamily="var(--font-jetbrains)">
-                      {code}
-                    </text>
-                  </g>
-                ))}
-              </svg>
+              </div>
+              <div className="mt-3 flex items-center justify-between rounded-xl bg-navy-800/60 px-3 py-2.5 text-[12px]">
+                <span className="text-ivory-50/60">Your markup on this booking</span>
+                <span className="font-semibold text-gold-200">+ ₹350</span>
+              </div>
             </div>
 
-            {/* trips table */}
-            <div className="rounded-2xl bg-navy-900 p-3">
-              {business.trips.map((t) => (
-                <div key={t.id} className="grid grid-cols-[96px_1fr_90px] items-center px-2 py-1.5 text-[12px]">
-                  <span className="font-mono text-gold-200">{t.id}</span>
-                  <span className="text-ivory-50/80">{t.label}</span>
-                  <span className={cn("text-right", t.status === "Completed" ? "text-emerald-400" : "text-ivory-50/70")}>{t.status}</span>
+            {/* bookings */}
+            <div className="flex-1 rounded-2xl bg-navy-900 p-3">
+              <div className="grid grid-cols-[120px_1fr_70px_80px_80px] px-2 pb-2 text-[10.5px] uppercase tracking-wider text-ivory-50/35">
+                <span>Booking</span>
+                <span>Customer</span>
+                <span>Type</span>
+                <span className="text-right">Fare</span>
+                <span className="text-right">Your markup</span>
+              </div>
+              {platform.bookings.map((b) => (
+                <div key={b.id} className="grid grid-cols-[120px_1fr_70px_80px_80px] items-center px-2 py-2 text-[12px]">
+                  <span className="font-mono text-ivory-50">{b.id}</span>
+                  <span className="text-ivory-50/75">{b.who}</span>
+                  <span className="text-ivory-50/55">{b.kind}</span>
+                  <span className="text-right text-ivory-50/75">{inr(b.fare)}</span>
+                  <span className="text-right font-semibold text-gold-200">+{inr(b.markup)}</span>
                 </div>
               ))}
             </div>
