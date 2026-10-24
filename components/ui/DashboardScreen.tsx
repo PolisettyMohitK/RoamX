@@ -68,7 +68,7 @@ export default function DashboardScreen() {
         <header className="flex h-[58px] items-center justify-between border-b border-navy-800 px-6">
           <div>
             <p className="text-[15px] font-semibold">{platform.agency}</p>
-            <p className="text-[11px] text-ivory-50/45">Your travel company · This month</p>
+            <p className="text-[11px] text-ivory-50/45">Your business · This month</p>
           </div>
           <div className="text-right">
             <p className="text-[11px] text-ivory-50/45">Markup earned</p>

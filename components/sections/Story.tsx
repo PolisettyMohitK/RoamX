@@ -5,7 +5,7 @@ import { gsap, useGSAP } from "@/lib/gsap";
 import { Defs } from "@/components/brand/Logo";
 import { CONTINENTS_2X, PLANE, RING, SWOOSH, SWOOSH_LINE } from "@/lib/logo-paths";
 import AmbientBackground from "@/components/ui/AmbientBackground";
-import { problem, problemHighlights, steps, stepsLine } from "@/lib/content";
+import { problem, problemGlobe, problemHighlights, steps, stepsLine } from "@/lib/content";
 
 const TITLE = "text-gold font-display font-extrabold leading-none tracking-[-0.045em] whitespace-nowrap pb-[0.06em]";
 
@@ -54,7 +54,7 @@ function GlobeMark({ planeRef, spinRef }: { planeRef?: React.Ref<SVGGElement>; s
 }
 
 /*
- * One pinned story. The problem line appears word by word, with the logo globe as the "o" in "company".
+ * One pinned story. The problem line appears word by word, with the logo globe as the "o" in one of its words.
  * Then the navy stage opens as a circle from the centre while the globe lifts off the word and flies to the
  * middle, growing to stage size. There it turns, its plane flies a loop around it and comes home, and
  * "Buy. Brand. Learn. Earn." plays out.
@@ -143,15 +143,15 @@ export default function Story() {
                 <span
                   data-word
                   style={{ opacity: 0 }}
-                  className={`inline-block ${problemHighlights.includes(w) ? "text-gold" : w === "company" ? "whitespace-nowrap" : ""}`}
+                  className={`inline-block ${problemHighlights.includes(w) ? "text-gold" : w === problemGlobe.word ? "whitespace-nowrap" : ""}`}
                 >
-                  {w === "company" ? (
+                  {w === problemGlobe.word ? (
                     <>
-                      c
+                      {w.slice(0, problemGlobe.at)}
                       <span data-o className="relative mx-[0.02em] inline-block h-[0.58em] w-[0.613em] align-baseline">
                         <GlobeMark />
                       </span>
-                      mpany
+                      {w.slice(problemGlobe.at + 1)}
                     </>
                   ) : (
                     w

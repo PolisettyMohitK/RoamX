@@ -66,6 +66,7 @@ export default function FinalCTA() {
           <div data-offer className="rounded-[28px] border border-[#c9973f]/35 bg-navy-950/55 p-7 sm:p-9">
             <p className="text-gold font-display text-[clamp(52px,6vw,80px)] font-bold leading-none tracking-[-0.04em]">{PRICE}</p>
             <p className="mt-3 text-[15px] text-ivory-50/70">{finalCta.terms.join(" · ")}</p>
+            <p className="mt-1.5 text-[15px] text-gold-200">{finalCta.perDay}</p>
             <ul className="mt-7 grid gap-3 sm:grid-cols-2">
               {finalCta.includes.map((f) => (
                 <li key={f} className="flex items-start gap-3 text-[15px] text-ivory-50/85">

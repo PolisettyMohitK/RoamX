@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
-import { earn } from "@/lib/content";
+import { earn, paybackLine } from "@/lib/content";
 
 const inr = (n: number) => `₹${Math.round(n).toLocaleString("en-IN")}`;
 const NUM = "font-display font-bold leading-none tracking-[-0.04em] tabular-nums";
@@ -62,7 +62,7 @@ export default function Earn() {
         <div className="mt-[clamp(28px,6svh,64px)] flex flex-wrap items-end justify-center gap-x-[clamp(14px,2.4vw,36px)] gap-y-4">
           <div data-term>
             <p className={`${NUM} text-[clamp(40px,6.4vw,96px)]`}>{inr(earn.fare)}</p>
-            <p className="mt-2 text-[13px] text-ivory-50/55">Ticket fare</p>
+            <p className="mt-2 text-[13px] text-ivory-50/55">Portal price</p>
           </div>
           <p data-term className={`${NUM} pb-7 text-[clamp(28px,3.6vw,52px)] text-ivory-50/40`}>
             +
@@ -88,7 +88,7 @@ export default function Earn() {
           </div>
           <div className="mt-3 flex justify-between text-[14px]">
             <span data-split className="text-ivory-50/60">
-              {inr(earn.fare)} to the airline
+              {inr(earn.fare)} to the portal
             </span>
             <span data-split className="font-semibold text-gold-200">
               {inr(earn.markup)} to you
@@ -105,6 +105,7 @@ export default function Earn() {
             <span ref={total}>{inr(earn.markup)}</span>
           </p>
           <p className="mt-2 text-[15px] text-ivory-50/70">yours to keep</p>
+          <p className="mx-auto mt-5 max-w-[34ch] text-[clamp(15px,1.3vw,18px)] text-ivory-50/85">{paybackLine}</p>
           <p className="mt-6 text-[12px] text-ivory-50/40">{earn.note}</p>
         </div>
       </div>

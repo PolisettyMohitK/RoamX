@@ -7,6 +7,7 @@ import BrandTicket from "@/components/sections/BrandTicket";
 import Earn from "@/components/sections/Earn";
 import Platform from "@/components/sections/Platform";
 import Learn from "@/components/sections/Learn";
+import Skills from "@/components/sections/Skills";
 import FAQ from "@/components/sections/FAQ";
 import FinalCTA from "@/components/sections/FinalCTA";
 import Footer from "@/components/sections/Footer";
@@ -25,6 +26,7 @@ export default function Home() {
         <Earn />
         <Platform />
         <Learn />
+        <Skills />
         <FAQ />
         <FinalCTA />
       </main>

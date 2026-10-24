@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 
 export const dynamic = "force-static";
 
-export const alt = "RoamX — Start your own travel company for ₹9,999";
+export const alt = "RoamX — From student to entrepreneur, for ₹9,999";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -33,8 +33,8 @@ export default function OpengraphImage() {
           />
           <div style={{ fontSize: 44, fontWeight: 800, letterSpacing: 2 }}>ROAMX</div>
         </div>
-        <div style={{ display: "flex", flexDirection: "column", fontSize: 84, fontWeight: 700, lineHeight: 1.02, letterSpacing: -3 }}>
-          <span>Your own travel company.</span>
+        <div style={{ display: "flex", flexDirection: "column", fontSize: 72, fontWeight: 700, lineHeight: 1.02, letterSpacing: -3 }}>
+          <span>From student to entrepreneur.</span>
           <span style={{ color: "#e2bb6a" }}>₹9,999</span>
         </div>
         <div style={{ display: "flex", fontSize: 26, color: "rgba(251,248,242,0.6)" }}>

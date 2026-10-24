@@ -21,6 +21,7 @@ const SPRING = { type: "spring", stiffness: 380, damping: 36, mass: 0.9 } as con
 export default function Navbar() {
   const [visible, setVisible] = useState(false);
   const [open, setOpen] = useState(false);
+  const [down, setDown] = useState(false); // scrolling down hides the header; any scroll up brings it back
   const [wide, setWide] = useState(false); // the header shows the Start button from 640px
   const shell = useRef<HTMLDivElement>(null);
 
@@ -32,12 +33,21 @@ export default function Navbar() {
       onEnter: () => setVisible(true),
       onLeaveBack: () => setVisible(false),
     });
+    let last = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (Math.abs(y - last) < 8) return;
+      setDown(y > last);
+      last = y;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
     const mq = window.matchMedia("(min-width: 640px)");
     const sync = () => setWide(mq.matches);
     sync();
     mq.addEventListener("change", sync);
     return () => {
       st.kill();
+      window.removeEventListener("scroll", onScroll);
       mq.removeEventListener("change", sync);
     };
   }, []);
@@ -74,11 +84,11 @@ export default function Navbar() {
     <header
       className={cn(
         "fixed inset-x-0 top-3 z-50 flex justify-center px-3 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] sm:top-4",
-        visible || open ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-6 opacity-0",
+        (visible && !down) || open ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-6 opacity-0",
       )}
     >
       <div ref={shell} className="relative w-full max-w-[1120px]">
-        <nav className="glass flex h-14 w-full items-center justify-between rounded-full pl-5 pr-2">
+        <nav className="glass-thick flex h-16 w-full items-center justify-between rounded-full pl-6 pr-3">
           <a
             href="#top"
             onClick={(e) => {

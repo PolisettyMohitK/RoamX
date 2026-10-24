@@ -6,6 +6,8 @@ import ScaledScreen from "@/components/ui/ScaledScreen";
 import DashboardScreen from "@/components/ui/DashboardScreen";
 import AgentAppScreen from "@/components/ui/AgentAppScreen";
 import AmbientBackground from "@/components/ui/AmbientBackground";
+import PhoneFrame from "@/components/ui/PhoneFrame";
+import { PortalHome } from "@/components/sections/Learn";
 import { platform } from "@/lib/content";
 
 /*
@@ -34,19 +36,20 @@ function Laptop() {
   );
 }
 
+// The app screen, with the photo story's portal home laid over it (hidden) so the phone can turn into it
+// while it flies down into the next section (see Learn.tsx).
 function Phone() {
   return (
-    <div className="relative rounded-[clamp(30px,3.6vw,46px)] bg-[#0b0f1c] p-[3.2%] shadow-[0_40px_80px_-30px_rgba(10,20,48,0.6),inset_0_0_0_1px_rgba(255,255,255,0.1)]">
-      <span className="absolute -left-[1.5%] top-[18%] h-[6%] w-[1.5%] rounded-l bg-[#1d2438]" />
-      <span className="absolute -left-[1.5%] top-[27%] h-[9%] w-[1.5%] rounded-l bg-[#1d2438]" />
-      <span className="absolute -right-[1.5%] top-[24%] h-[12%] w-[1.5%] rounded-r bg-[#1d2438]" />
-      <div className="relative overflow-hidden rounded-[clamp(24px,3vw,38px)]">
-        <span className="absolute left-1/2 top-[1.6%] z-10 h-[3.6%] w-[32%] -translate-x-1/2 rounded-full bg-[#0b0f1c]" />
+    <PhoneFrame>
+      <ScaledScreen width={300} height={620}>
+        <AgentAppScreen />
+      </ScaledScreen>
+      <div data-handoff-screen className="absolute inset-0 opacity-0">
         <ScaledScreen width={300} height={620}>
-          <AgentAppScreen />
+          <PortalHome />
         </ScaledScreen>
       </div>
-    </div>
+    </PhoneFrame>
   );
 }
 
@@ -84,7 +87,7 @@ export default function Platform() {
   );
 
   return (
-    <section ref={root} id="dashboard" className="relative overflow-hidden bg-ivory-100 pb-28 pt-28 sm:pb-40 sm:pt-36">
+    <section ref={root} id="dashboard" className="relative overflow-x-clip bg-ivory-100 pb-28 pt-28 sm:pb-40 sm:pt-36">
       <AmbientBackground />
       <div className="relative mx-auto max-w-[1180px] px-5 sm:px-10">
         <div data-head className="mx-auto max-w-[760px] text-center">
@@ -100,7 +103,9 @@ export default function Platform() {
             data-phone
             className="relative z-10 mx-auto mt-10 w-[min(62vw,260px)] md:absolute md:-bottom-[12%] md:-right-[4%] md:mt-0 md:w-[21%]"
           >
-            <Phone />
+            <div data-handoff className="relative z-[45] will-change-transform">
+              <Phone />
+            </div>
           </div>
         </div>
       </div>

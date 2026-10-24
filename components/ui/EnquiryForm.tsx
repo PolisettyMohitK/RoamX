@@ -64,7 +64,7 @@ export default function EnquiryForm({ className, tone = "dark" }: { className?: 
             className={cn("rounded-3xl border border-gold-400/40 p-7", light ? "bg-white/70" : "bg-navy-950/50")}
           >
             <p className="font-display text-2xl font-semibold">Thank you, {f.name.split(" ")[0]}.</p>
-            <p className={cn("mt-2", light ? "text-navy-800/70" : "text-ivory-50/70")}>The RoamX team will get in touch to help you start your company.</p>
+            <p className={cn("mt-2", light ? "text-navy-800/70" : "text-ivory-50/70")}>The RoamX team will get in touch to help you get started.</p>
           </motion.div>
         ) : (
           <motion.form key="form" onSubmit={submit} noValidate exit={{ opacity: 0, y: -10 }} className="grid gap-3">
