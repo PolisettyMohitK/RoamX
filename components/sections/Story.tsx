@@ -7,7 +7,7 @@ import { CONTINENTS_2X, PLANE, RING, SWOOSH, SWOOSH_LINE } from "@/lib/logo-path
 import AmbientBackground from "@/components/ui/AmbientBackground";
 import { problem, problemGlobe, problemHighlights, steps, stepsLine } from "@/lib/content";
 
-const TITLE = "text-gold font-display font-extrabold leading-none tracking-[-0.045em] whitespace-nowrap pb-[0.06em]";
+const TITLE = "text-gold font-display font-extrabold leading-none tracking-[-0.045em] whitespace-nowrap";
 
 // The plane sits on the logo with its tail at (705, 232), heading -36.9°; its middle is 89 units along the body.
 const PLANE_MID = { x: 776.2, y: 178.6 };
@@ -19,9 +19,9 @@ const SPIN_PERIOD = 250;
 
 /**
  * The logo globe, laid out by its ring: the element's box is the ring (294 × 278 emblem units), and the
- * swoosh and plane spill outside it. `planeRef` lets the plane fly; `spinRef` turns the globe.
+ * swoosh and plane spill outside it. `planeRef` lets the plane fly; `[data-spin]` turns the globe.
  */
-function GlobeMark({ planeRef, spinRef }: { planeRef?: React.Ref<SVGGElement>; spinRef?: React.Ref<SVGGElement> }) {
+function GlobeMark({ planeRef }: { planeRef?: React.Ref<SVGGElement> }) {
   const id = useId().replace(/:/g, "");
   const gold = `url(#${id}-gold)`;
   return (
@@ -39,9 +39,9 @@ function GlobeMark({ planeRef, spinRef }: { planeRef?: React.Ref<SVGGElement>; s
       <ellipse cx="514" cy="396" rx="124" ry="118" fill="#050d1e" />
       <ellipse cx="514" cy="396" rx="119" ry="115" fill={`url(#${id}-navy)`} />
       <g clipPath={`url(#${id}-globe)`}>
-        <g ref={spinRef}>
+        <g data-spin>
           <path d={CONTINENTS_2X} fill={gold} transform="scale(0.5)" />
-          {spinRef && <path d={CONTINENTS_2X} fill={gold} transform={`translate(${-SPIN_PERIOD} 0) scale(0.5)`} />}
+          <path d={CONTINENTS_2X} fill={gold} transform={`translate(${-SPIN_PERIOD} 0) scale(0.5)`} />
         </g>
       </g>
       <path fill={gold} d={SWOOSH} />
@@ -62,7 +62,6 @@ function GlobeMark({ planeRef, spinRef }: { planeRef?: React.Ref<SVGGElement>; s
 export default function Story() {
   const root = useRef<HTMLElement>(null);
   const stage = useRef<HTMLDivElement>(null);
-  const spin = useRef<SVGGElement>(null);
   const plane = useRef<SVGGElement>(null);
   const words = problem.split(" ");
 
@@ -110,8 +109,7 @@ export default function Story() {
           { clipPath: () => `circle(${Math.hypot(st.offsetWidth, st.offsetHeight) / 2 + 2}px at 50% 50%)`, duration: 0.22, ease: "power2.inOut" },
           0.37,
         )
-        // C: the globe turns; its plane flies a loop around it and comes home
-        .to(spin.current, { x: SPIN_PERIOD * 2, duration: 0.63, modifiers: { x: gsap.utils.unitize(gsap.utils.wrap(0, SPIN_PERIOD)) } }, 0.37)
+        // C: its plane flies a loop around the globe and comes home
         .to(plane.current, { motionPath: { path: ORBIT, autoRotate: true }, duration: 0.28, ease: "sine.inOut" }, 0.62);
 
       q("[data-travel]").forEach((el) => {
@@ -127,6 +125,15 @@ export default function Story() {
         tl.fromTo(w, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.03, ease: "power2.out" }, 0.7 + i * 0.06);
       });
       tl.to({}, { duration: 0.02 }, 0.98);
+
+      // both globes (in the word and in flight) turn together, always, but only while the section is on screen
+      gsap.to(q("[data-spin]"), {
+        x: SPIN_PERIOD,
+        duration: 14,
+        ease: "none",
+        repeat: -1,
+        scrollTrigger: { trigger: root.current, start: "top bottom", end: "bottom top", toggleActions: "play pause resume pause" },
+      });
     },
     { scope: root },
   );
@@ -165,7 +172,7 @@ export default function Story() {
         {/* B + C: the navy stage, opened as a circle from the centre */}
         <div
           data-dark
-          className="metal-dark absolute inset-0 flex flex-col items-center justify-center px-5 text-ivory-50 [--ww:min(46vw,560px,56svh)] max-sm:[--ww:min(72vw,38svh)]"
+          className="metal-dark absolute inset-0 flex flex-col items-center justify-center px-5 text-ivory-50 [--ww:min(46vw,560px,56svh)] max-sm:[--ww:min(62vw,38svh)]"
           style={{ clipPath: "circle(0px at 50% 50%)" }}
         >
           <p data-travel className={`${TITLE} mb-7 text-[clamp(44px,15vw,72px)] sm:hidden`}>
@@ -173,15 +180,16 @@ export default function Story() {
           </p>
 
           <div className="relative grid aspect-square w-[var(--ww)] place-items-center">
-            <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 max-sm:hidden">
-              <div data-travel className={`${TITLE} flex items-center text-[clamp(44px,7.5vw,150px)]`}>
-                <span>RoamX</span>
-                <span className="w-[calc(var(--ww)+5vw)] shrink-0" />
+            {/* the wordmark is centred on the ring, so RoamX and Evolve sit evenly either side of it */}
+            <div className="pointer-events-none absolute left-1/2 top-[56.8%] w-max -translate-x-1/2 -translate-y-1/2 max-sm:hidden">
+              <div data-travel className={`${TITLE} grid grid-cols-[1fr_auto_1fr] items-center text-[clamp(40px,6.5vw,150px)]`}>
+                <span className="justify-self-end">RoamX</span>
+                <span className="w-[calc(var(--ww)*0.6+10vw)]" />
                 <span>Evolve</span>
               </div>
             </div>
-            {/* where the globe lands: its ring, sized and nudged so the whole loop of the plane is centred in the box */}
-            <div data-land className="aspect-[294/278] w-[60%] -translate-x-[22%] translate-y-[12%]" />
+            {/* where the globe lands: its ring, sized and centred on the screen, nudged down so the plane above it has room */}
+            <div data-land className="aspect-[294/278] w-[60%] translate-y-[12%]" />
           </div>
 
           <p data-travel className={`${TITLE} mt-3 text-[clamp(44px,15vw,72px)] sm:hidden`}>
@@ -204,7 +212,7 @@ export default function Story() {
 
         {/* the globe in flight, above both layers */}
         <div data-flyer className="pointer-events-none absolute left-0 top-0 z-10">
-          <GlobeMark planeRef={plane} spinRef={spin} />
+          <GlobeMark planeRef={plane} />
         </div>
       </div>
     </section>

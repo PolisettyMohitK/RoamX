@@ -29,6 +29,9 @@
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  /* the gradient only paints inside the box, so give descenders (g, y, p) room without moving the layout */
+  padding-block: 0.12em;
+  margin-block: -0.12em;
 }
 
 @utility bg-gold {

@@ -59,7 +59,7 @@ export default function Skills() {
 
       <p data-close className="mx-auto mt-24 max-w-[1180px] px-5 font-display text-[clamp(30px,4.2vw,62px)] font-bold leading-[1.04] tracking-[-0.035em] sm:mt-36 sm:px-10">
         {skills.close.map((l, i) => (
-          <span key={l} className="block overflow-hidden pb-[0.08em]">
+          <span key={l} className="-mb-[0.08em] block overflow-hidden pb-[0.16em]">
             <span data-close-line className={i === 1 ? "text-gold inline-block" : "block"}>
               {l}
             </span>

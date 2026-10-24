@@ -51,7 +51,7 @@ export default function FinalCTA() {
         <div className="min-w-0">
           <h2 className="font-display text-[clamp(44px,6.2vw,96px)] font-bold leading-[0.98] tracking-[-0.04em]">
             {finalCta.headline.map((l, i) => (
-              <span key={l} className="block overflow-hidden pb-[0.08em]">
+              <span key={l} className="-mb-[0.08em] block overflow-hidden pb-[0.16em]">
                 <span data-cta-line className={i === 1 ? "text-gold block" : "block"}>
                   {l}
                 </span>

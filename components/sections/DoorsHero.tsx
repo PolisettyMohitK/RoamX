@@ -66,7 +66,7 @@ export default function DoorsHero() {
           <div className="flex w-full max-w-[1100px] flex-col gap-5 md:flex-row md:items-end md:justify-between md:gap-10">
             <h1 className="font-display text-[clamp(30px,4.6vw,68px)] font-bold leading-[1] tracking-[-0.035em] text-ivory-50">
               {hero.headline.map((l, i) => (
-                <span key={l} className="block overflow-hidden pb-[0.08em]">
+                <span key={l} className="-mb-[0.08em] block overflow-hidden pb-[0.16em]">
                   <span data-line className={i === 1 ? "text-gold block" : "block"}>
                     {l}
                   </span>

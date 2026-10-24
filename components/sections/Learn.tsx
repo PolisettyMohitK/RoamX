@@ -362,7 +362,7 @@ export default function Learn() {
             <p data-from className="absolute inset-x-0 top-0 font-display text-[clamp(40px,7vw,110px)] font-bold leading-none tracking-[-0.04em] text-ivory-50/80 [text-shadow:0_2px_30px_rgb(7_15_36/0.7)]">
               {learn.from}
             </p>
-            <p data-to className="text-gold font-display text-[clamp(44px,9vw,140px)] font-extrabold leading-none tracking-[-0.045em] pb-[0.08em]">
+            <p data-to className="text-gold font-display text-[clamp(44px,9vw,140px)] font-extrabold leading-none tracking-[-0.045em]">
               {learn.to}
             </p>
             <p data-training className="mt-4 text-[clamp(16px,1.4vw,20px)] text-ivory-50/85 [text-shadow:0_2px_20px_rgb(7_15_36/0.8)]">
